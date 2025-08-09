@@ -16,3 +16,22 @@ datasource db {
 // =====
 // game models
 // =====
+model User {
+  id            Int         @id @default(autoincrement())
+  name          String
+  characterList Character[]
+}
+
+model Character {
+  id        Int    @id @default(autoincrement())
+  userId    Int?
+  user      User?  @relation(fields: [userId], references: [id])
+  name      String
+  might     Int
+  cunning   Int
+  charm     Int
+  health    Int
+  gold      Int
+  inventory Json // string[] JSON item ids
+  powers    Json // string[] JSON item ids
+}
