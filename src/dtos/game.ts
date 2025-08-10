@@ -1,3 +1,5 @@
+import { QuestStatus } from "@prisma/client";
+
 export type CharacterDTO = {
   id: number;
   name: string;
@@ -8,4 +10,16 @@ export type CharacterDTO = {
   gold: number;
   inventory: string[];
   powers: string[];
+};
+
+export type QuestDTO = {
+  id: number;
+  name: string;
+  status: QuestStatus;
+  objective: string;
+  difficulty: number;
+  minDifficulty: number;
+  maxDifficulty: number;
+  encounterLimit: number;
+  storyBeats: string[];
 };

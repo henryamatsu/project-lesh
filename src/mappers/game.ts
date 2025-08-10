@@ -1,5 +1,5 @@
-import { Character } from "@prisma/client";
-import { CharacterDTO } from "../dtos/game";
+import { Character, Quest } from "@prisma/client";
+import { CharacterDTO, QuestDTO } from "../dtos/game";
 
 // import actionModifierList from "@/src/data/actionModifiers.json";
 
@@ -17,4 +17,20 @@ export function toCharacterDTO(character: Character): CharacterDTO {
   };
 
   return characterDTO;
+}
+
+export function toQuestDTO(quest: Quest): QuestDTO {
+  const questDTO: QuestDTO = {
+    id: quest.id,
+    name: quest.name,
+    status: quest.status,
+    objective: quest.objective,
+    difficulty: quest.difficulty,
+    minDifficulty: quest.minDifficulty,
+    maxDifficulty: quest.maxDifficulty,
+    encounterLimit: quest.encounterLimit,
+    storyBeats: [], //quest.storyBeats
+  };
+
+  return questDTO;
 }

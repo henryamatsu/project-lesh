@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCharacterById } from "@/src/controllers/character";
+import { getQuestById } from "@/src/controllers/quest";
 
 type Params = {
   id: number;
@@ -11,13 +11,13 @@ type RouteContext = {
   params: Params;
 };
 
-// getCharacterById
+// getQuestById
 export async function GET(req: NextRequest, { params }: RouteContext) {
   try {
     const { id } = await params;
 
-    const character = await getCharacterById(Number(id));
-    return NextResponse.json(character, {
+    const quest = await getQuestById(Number(id));
+    return NextResponse.json(quest, {
       status: 200,
     });
   } catch (err) {
