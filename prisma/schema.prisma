@@ -14,24 +14,51 @@ datasource db {
 }
 
 // =====
+// enums
+// =====
+enum QuestStatus {
+  ONGOING
+  ABANDONED
+  FAILED
+  SUCCEEDED
+}
+
+// =====
 // game models
 // =====
 model User {
   id            Int         @id @default(autoincrement())
-  name          String
   characterList Character[]
+  name          String
 }
 
 model Character {
-  id        Int    @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   userId    Int?
-  user      User?  @relation(fields: [userId], references: [id])
+  user      User?   @relation(fields: [userId], references: [id])
+  questList Quest[]
   name      String
   might     Int
   cunning   Int
   charm     Int
   health    Int
   gold      Int
-  inventory Json // string[] JSON item ids
-  powers    Json // string[] JSON item ids
+  inventory Json // string[] (JSON item ids)
+  powers    Json // string[] (JSON item ids)
+}
+
+model Quest {
+  id             Int         @id @default(autoincrement())
+  characterId    Int
+  character      Character   @relation(fields: [characterId], references: [id])
+  questLineId    Int?
+  questLineIndex Int?
+  name           String
+  status         QuestStatus
+  objective      String
+  difficulty     Int
+  minDifficulty  Int
+  maxDifficulty  Int
+  encounterLimit Int
+  storyBeats     Json // string[]
 }
