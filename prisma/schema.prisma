@@ -99,7 +99,7 @@ model Objective {
   encounter    Encounter @relation(fields: [encounterId], references: [id])
   name         String
   rewardList   Json // EncounterReward[]
-  ApproachList Json // ActionApproach[]
+  approachList Json // ActionApproach[]
   difficulty   Int
   rollResult   Int?
 }
