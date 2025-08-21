@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { ActionApproach, PrismaClient } from "@prisma/client";
 import { ActionDTO } from "@/src/dtos/game";
 import { toActionDTO } from "@/src/mappers/game";
 
@@ -18,6 +18,7 @@ export async function createAction(encounterId: number): Promise<ActionDTO> {
       encounterId,
       name: "action1",
       effectList: [],
+      approach: ActionApproach.GENERAL,
       difficulty: 10,
       rollResult: null,
     },

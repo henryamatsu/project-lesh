@@ -1,4 +1,9 @@
-import { QuestStatus, EncounterReward, ActionEffect } from "@prisma/client";
+import {
+  QuestStatus,
+  EncounterReward,
+  ActionEffect,
+  ActionApproach,
+} from "@prisma/client";
 
 export type CharacterDTO = {
   id: number;
@@ -36,6 +41,7 @@ export type ObjectiveDTO = {
   id: number;
   name: string;
   rewardList: EncounterReward[];
+  approachList: ActionApproach[];
   difficulty: number;
   rollResult: number | null;
 };
@@ -44,6 +50,7 @@ export type ActionDTO = {
   id: number;
   name: string;
   effectList: ActionEffect[];
+  approach: ActionApproach;
   difficulty: number;
   rollResult: number | null;
 };
