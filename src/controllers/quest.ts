@@ -29,9 +29,7 @@ export async function createQuest(characterId: number): Promise<QuestDTO> {
     },
   });
 
-  const questDTO = toQuestDTO(quest);
-
-  return questDTO;
+  return toQuestDTO(quest);
 }
 
 export async function getQuestById(id: number): Promise<QuestDTO> {

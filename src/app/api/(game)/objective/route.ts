@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createEncounter } from "@/src/controllers/encounter";
+import { createObjective } from "@/src/controllers/objective";
 
-// createEncounter
+// createObjective
 export async function POST(req: NextRequest) {
   try {
-    const { questId } = await req.json();
-    const encounter = await createEncounter(questId);
+    const { encounterId } = await req.json();
+    const objective = await createObjective(encounterId);
 
-    return NextResponse.json(encounter, {
+    return NextResponse.json(objective, {
       status: 201,
     });
   } catch (err) {
