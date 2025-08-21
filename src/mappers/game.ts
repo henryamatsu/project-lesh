@@ -58,6 +58,7 @@ export function toObjectiveDTO(objective: Objective): ObjectiveDTO {
     id: objective.id,
     name: objective.name,
     rewardList: [],
+    approachList: [],
     difficulty: objective.difficulty,
     rollResult: objective.rollResult,
   };
@@ -70,6 +71,7 @@ export function toActionDTO(action: Action): ActionDTO {
     id: action.id,
     name: action.name,
     effectList: [],
+    approach: action.approach,
     difficulty: action.difficulty,
     rollResult: action.rollResult,
   };

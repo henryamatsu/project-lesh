@@ -35,6 +35,13 @@ enum ActionEffect {
   THREE
 }
 
+enum ActionApproach {
+  VIOLENCE
+  DIPLOMACY
+  SUBTERFUGE
+  GENERAL
+}
+
 // =====
 // game models
 // =====
@@ -87,21 +94,23 @@ model Encounter {
 }
 
 model Objective {
-  id          Int       @id @default(autoincrement())
-  encounterId Int
-  encounter   Encounter @relation(fields: [encounterId], references: [id])
-  name        String
-  rewardList  Json // EncounterReward[]
-  difficulty  Int
-  rollResult  Int?
+  id           Int       @id @default(autoincrement())
+  encounterId  Int
+  encounter    Encounter @relation(fields: [encounterId], references: [id])
+  name         String
+  rewardList   Json // EncounterReward[]
+  ApproachList Json // ActionApproach[]
+  difficulty   Int
+  rollResult   Int?
 }
 
 model Action {
-  id          Int       @id @default(autoincrement())
+  id          Int            @id @default(autoincrement())
   encounterId Int
-  encounter   Encounter @relation(fields: [encounterId], references: [id])
+  encounter   Encounter      @relation(fields: [encounterId], references: [id])
   name        String
   effectList  Json // ActionEffect[]
+  approach    ActionApproach
   difficulty  Int
   rollResult  Int?
 }

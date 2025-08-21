@@ -20,6 +20,7 @@ export async function createObjective(
       encounterId,
       name: "objective1",
       rewardList: [],
+      ApproachList: [],
       difficulty: 20,
       rollResult: null,
     },
