@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createEncounter } from "@/src/controllers/encounter";
+import { createAction } from "@/src/controllers/action";
 
-// createEncounter
+// createAction
 export async function POST(req: NextRequest) {
   try {
-    const { questId } = await req.json();
-    const encounter = await createEncounter(questId);
+    const { encounterId } = await req.json();
+    const action = await createAction(encounterId);
 
-    return NextResponse.json(encounter, {
+    return NextResponse.json(action, {
       status: 201,
     });
   } catch (err) {

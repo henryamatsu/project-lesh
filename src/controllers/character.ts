@@ -29,9 +29,7 @@ export async function createCharacter(
     },
   });
 
-  const characterDTO = toCharacterDTO(character);
-
-  return characterDTO;
+  return toCharacterDTO(character);
 }
 
 export async function getCharacterById(id: number): Promise<CharacterDTO> {

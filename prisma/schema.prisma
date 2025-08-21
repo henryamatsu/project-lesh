@@ -23,6 +23,18 @@ enum QuestStatus {
   SUCCEEDED
 }
 
+enum EncounterReward {
+  ONE
+  TWO
+  THREE
+}
+
+enum ActionEffect {
+  ONE
+  TWO
+  THREE
+}
+
 // =====
 // game models
 // =====
@@ -51,6 +63,7 @@ model Quest {
   id             Int         @id @default(autoincrement())
   characterId    Int
   character      Character   @relation(fields: [characterId], references: [id])
+  encounterList  Encounter[]
   questLineId    Int?
   questLineIndex Int?
   name           String
@@ -61,4 +74,34 @@ model Quest {
   maxDifficulty  Int
   encounterLimit Int
   storyBeats     Json // string[]
+}
+
+model Encounter {
+  id            Int         @id @default(autoincrement())
+  questId       Int
+  quest         Quest       @relation(fields: [questId], references: [id])
+  objectiveList Objective[]
+  actionList    Action[]
+  name          String
+  promptLimit   Int
+}
+
+model Objective {
+  id          Int       @id @default(autoincrement())
+  encounterId Int
+  encounter   Encounter @relation(fields: [encounterId], references: [id])
+  name        String
+  rewardList  Json // EncounterReward[]
+  difficulty  Int
+  rollResult  Int?
+}
+
+model Action {
+  id          Int       @id @default(autoincrement())
+  encounterId Int
+  encounter   Encounter @relation(fields: [encounterId], references: [id])
+  name        String
+  effectList  Json // ActionEffect[]
+  difficulty  Int
+  rollResult  Int?
 }
