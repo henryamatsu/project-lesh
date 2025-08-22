@@ -1,4 +1,10 @@
-import { Action, ActionApproach, PrismaClient } from "@prisma/client";
+import {
+  Action,
+  ActionApproach,
+  Encounter,
+  Prisma,
+  PrismaClient,
+} from "@prisma/client";
 import { EncounterDTO, ActionDTO, ObjectiveDTO } from "@/src/dtos/game";
 import {
   toEncounterDTO,
@@ -7,6 +13,13 @@ import {
 } from "@/src/mappers/game";
 
 const prisma = new PrismaClient();
+
+type EncounterWithRelations = Prisma.EncounterGetPayload<{
+  include: {
+    objectiveList: true;
+    actionList: true;
+  };
+}>;
 
 export async function createEncounter(questId: number): Promise<EncounterDTO> {
   const quest = await prisma.quest.findUnique({
@@ -34,13 +47,7 @@ export async function createEncounter(questId: number): Promise<EncounterDTO> {
 // createEncounter helper functions ↓
 
 async function createObjectives(encounterId: number) {
-  const encounter = await prisma.encounter.findUnique({
-    where: { id: encounterId },
-  });
-
-  if (encounter === null) {
-    throw new Error("Encounter not found");
-  }
+  await checkEncounter(encounterId);
 
   const objectiveList: ObjectiveDTO[] = [];
   const objectiveCount = 1;
@@ -58,7 +65,7 @@ async function createObjectives(encounterId: number) {
         ActionApproach.DIPLOMACY,
         ActionApproach.SUBTERFUGE,
       ],
-      difficulty: 10,
+      difficulty: 30,
       rollResult: null,
     };
 
@@ -75,13 +82,7 @@ async function createObjectives(encounterId: number) {
 async function generateObjectiveDetails() {}
 
 async function createActions(encounterId: number): Promise<ActionDTO[]> {
-  const encounter = await prisma.encounter.findUnique({
-    where: { id: encounterId },
-  });
-
-  if (encounter === null) {
-    throw new Error("Encounter not found");
-  }
+  await checkEncounter(encounterId);
 
   const actionList: ActionDTO[] = [];
   const actionCount = 2;
@@ -117,6 +118,25 @@ async function generateActionDetails() {
 // createEncounter helper functions ↑
 
 export async function getEncounterById(id: number): Promise<EncounterDTO> {
+  const encounter: EncounterWithRelations | null =
+    await prisma.encounter.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        objectiveList: true,
+        actionList: true,
+      },
+    });
+
+  if (encounter === null) {
+    throw new Error("Encounter not found");
+  }
+
+  return toEncounterDTO(encounter);
+}
+
+async function checkEncounter(id: number): Promise<Encounter> {
   const encounter = await prisma.encounter.findUnique({
     where: {
       id,
@@ -127,5 +147,5 @@ export async function getEncounterById(id: number): Promise<EncounterDTO> {
     throw new Error("Encounter not found");
   }
 
-  return toEncounterDTO(encounter);
+  return encounter;
 }

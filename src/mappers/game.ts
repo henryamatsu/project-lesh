@@ -1,4 +1,11 @@
-import { Character, Quest, Encounter, Objective, Action } from "@prisma/client";
+import {
+  Character,
+  Quest,
+  Encounter,
+  Objective,
+  Action,
+  Prisma,
+} from "@prisma/client";
 import {
   ActionDTO,
   CharacterDTO,
@@ -8,6 +15,13 @@ import {
 } from "../dtos/game";
 
 // import actionModifierList from "@/src/data/actionModifiers.json";
+
+type EncounterWithRelations = Prisma.EncounterGetPayload<{
+  include: {
+    objectiveList: true;
+    actionList: true;
+  };
+}>;
 
 export function toCharacterDTO(character: Character): CharacterDTO {
   const characterDTO: CharacterDTO = {
@@ -41,11 +55,21 @@ export function toQuestDTO(quest: Quest): QuestDTO {
   return questDTO;
 }
 
-export function toEncounterDTO(encounter: Encounter): EncounterDTO {
+export function toEncounterDTO(
+  encounter: EncounterWithRelations | Encounter
+): EncounterDTO {
+  let objectiveList: ObjectiveDTO[] = [];
+  let actionList: ActionDTO[] = [];
+
+  if ("objectiveList" in encounter) {
+    objectiveList = encounter.objectiveList.map((o) => toObjectiveDTO(o));
+    actionList = encounter.actionList.map((a) => toActionDTO(a));
+  }
+
   const encounterDTO: EncounterDTO = {
     id: encounter.id,
-    objectiveList: [],
-    actionList: [],
+    objectiveList: objectiveList,
+    actionList: actionList,
     name: encounter.name,
     promptLimit: encounter.promptLimit,
   };
