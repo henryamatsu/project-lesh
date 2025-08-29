@@ -10,8 +10,19 @@ export async function getEncounterById(
   return data;
 }
 
-export async function attemptAction(actionId: number): Promise<ActionDTO> {
-  const res = await fetch(`/api/action/${actionId}/attempt`);
+export async function attemptAction(
+  actionId: number,
+  objectiveId: number
+): Promise<ActionDTO> {
+  const res = await fetch(`/api/action/${actionId}/attempt`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      objectiveId,
+    }),
+  });
   const data: ActionDTO = await res.json();
   if (!res.ok) throw new Error("Failed to load action");
 
