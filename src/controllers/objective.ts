@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Objective, PrismaClient } from "@prisma/client";
 import { ObjectiveDTO } from "@/src/dtos/game";
 import { toObjectiveDTO } from "@/src/mappers/game";
 
@@ -20,7 +20,7 @@ export async function createObjective(
       encounterId,
       name: "objective1",
       rewardList: [],
-      ApproachList: [],
+      approachList: [],
       difficulty: 20,
       rollResult: null,
     },
@@ -30,6 +30,31 @@ export async function createObjective(
 }
 
 export async function getObjectiveById(id: number): Promise<ObjectiveDTO> {
+  const objective = await checkObjective(id);
+
+  return toObjectiveDTO(objective);
+}
+
+export async function attemptObjective(
+  objectiveId: number
+): Promise<ObjectiveDTO> {
+  const objective = await checkObjective(objectiveId);
+  const objectiveDTO = toObjectiveDTO(objective);
+
+  const updatedObjective = objectiveRoll(objectiveDTO);
+
+  return updatedObjective;
+}
+
+async function objectiveRoll(objective: ObjectiveDTO): Promise<ObjectiveDTO> {
+  //logic incomplete
+
+  const updatedObjective = objective;
+
+  return updatedObjective;
+}
+
+async function checkObjective(id: number): Promise<Objective> {
   const objective = await prisma.objective.findUnique({
     where: {
       id,
@@ -40,5 +65,5 @@ export async function getObjectiveById(id: number): Promise<ObjectiveDTO> {
     throw new Error("Objective not found");
   }
 
-  return toObjectiveDTO(objective);
+  return objective;
 }
